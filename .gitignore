@@ -1,0 +1,16 @@
+venv/
+# Ambientes virtuais
+venv/
+.env/
+
+# Arquivos do editor/IDE
+.vscode/
+.idea/
+
+# Arquivos de log
+*.log
+
+# Arquivos compilados
+__pycache__/
+*.pyc
+*.pyo

@@ -11,3 +11,9 @@ CREATE TABLE contatos (
 -- Comando usado para consultar a tabela Contatos
 SELECT * FROM contatos;
 
+-- Comando usado no PostgreSQL para Deletar Contatos direto da tabela Contatos
+DELETE FROM contatos
+WHERE nome = 'Nome do Contato' AND telefone = 'Numero do Contato';
+
+
+

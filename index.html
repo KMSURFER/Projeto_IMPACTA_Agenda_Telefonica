@@ -4,17 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda Telefônica</title>
+    <style>
+        /* Estilo para os inputs */
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px; /* Espaço entre o campo e o botão da lupa */
+        }
+
+        /* Estilo para os botões */
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        /* Estilo para os botões ao passar o mouse */
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Estilo específico para o botão de limpar */
+        #clearSearchButton {
+            background-color: #f44336;
+            margin-top: 5px; /* Para que fique abaixo do campo de busca */
+        }
+
+        /* Estilo ao passar o mouse no botão de limpar */
+        #clearSearchButton:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Alinhar os campos de busca e botões */
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px; /* Espaço abaixo do container */
+        }
+    </style>
 </head>
 <body>
     <h1>Agenda Telefônica</h1>
+
+    <!-- Formulário para adicionar contato -->
     <form id="contactForm">
         <label for="nome">Nome:</label><br>
         <input type="text" id="nome" name="nome" required><br><br>
         <label for="telefone">Telefone:</label><br>
         <input type="text" id="telefone" name="telefone" required><br><br>
         <button type="submit">Adicionar</button>
+        <button type="button" id="searchButton">Procurar Contato</button>
     </form>
+
+    <!-- Campo para mensagens de resultado da adição de contatos -->
     <p id="message"></p>
+
+    <!-- Campo de busca e resultado da busca -->
+    <div id="searchDiv" style="display:none;">
+        <label for="searchInput">Buscar por Nome ou Telefone:</label><br>
+        <div class="search-container">
+            <input type="text" id="searchInput" name="searchInput">
+            <button type="button" id="searchContactButton">🔍</button>
+        </div>
+        <button type="button" id="clearSearchButton">Limpar Busca</button>
+        <div id="searchResult" style="margin-top: 10px;"></div>
+    </div>
 
     <script src="script.js"></script>
 </body>

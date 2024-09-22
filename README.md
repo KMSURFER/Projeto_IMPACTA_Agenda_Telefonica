@@ -14,7 +14,7 @@ Nesse Projeto foi utilizado as seguintes tecnogias:
 
 Funções do Projeto:
 
-AC1 -> Função "CADASTRAR" contato.
+AC1 -> Função "CADASTRAR" contato. ✔
 
 AC2 -> Função "EDITAR" contato.
 

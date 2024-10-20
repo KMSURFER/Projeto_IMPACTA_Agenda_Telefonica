@@ -58,6 +58,31 @@ def search_contact():
 
     except Exception as e:
         return jsonify({"error": f"Erro ao procurar contato: {e}"}), 500
+    
+@app.route('/edit', methods=['PUT'])
+def edit_contact():
+    try:
+        data = request.get_json()
+        old_name = data['old_name']
+        old_phone = data['old_phone']
+        new_name = data['new_name']
+        new_phone = data['new_phone']
+
+        cursor = conn.cursor()
+        # Atualiza o contato
+        cursor.execute("""
+            UPDATE contatos 
+            SET nome = %s, telefone = %s 
+            WHERE nome = %s AND telefone = %s
+        """, (new_name, new_phone, old_name, old_phone))
+        conn.commit()
+        cursor.close()
+
+        return jsonify({"message": "Contato atualizado com sucesso!"})
+
+    except Exception as e:
+        return jsonify({"message": f"Erro ao atualizar contato: {e}"}), 500
+
 
 
 if __name__ == "__main__":

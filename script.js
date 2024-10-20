@@ -45,10 +45,36 @@ document.getElementById('searchContactButton').addEventListener('click', functio
             searchResultDiv.textContent = data.error;
         } else {
             searchResultDiv.innerHTML = `
-                <p><strong>Nome:</strong> ${data.nome}</p>
-                <p><strong>Telefone:</strong> ${data.telefone}</p>
-                <p>Contato encontrado com sucesso!</p>
-            `;
+                <p><strong>Nome:</strong> <input type="text" id="editNome" value="${data.nome}"></p>
+                <p><strong>Telefone:</strong> <input type="text" id="editTelefone" value="${data.telefone}"></p>
+                <button id="editContactButton">Editar Contato</button>
+                <div id="editMessage" style="margin-top: 10px;"></div>
+            `; 
+   
+            // Adiciona o evento de edição
+            document.getElementById('editContactButton').addEventListener('click', function() {
+                let new_name = document.getElementById('editNome').value;
+                let new_phone = document.getElementById('editTelefone').value;
+
+                fetch('http://127.0.0.1:5000/edit', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        old_name: data.nome, 
+                        old_phone: data.telefone, 
+                        new_name: new_name, 
+                        new_phone: new_phone 
+                    })
+                })
+                .then(response => response.json())
+                .then(editData => {
+                    // Exibe a mensagem desejada após a edição.
+                    document.getElementById('editMessage').textContent = "Contato Editado e Salvo com Sucesso!";
+                })
+                .catch(error => console.error('Erro:', error));
+            });
         }
     })
     .catch(error => console.error('Erro:', error));

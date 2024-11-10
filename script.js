@@ -32,7 +32,7 @@ document.getElementById('searchContactButton').addEventListener('click', functio
     let searchValue = document.getElementById('searchInput').value;
 
     fetch('http://127.0.0.1:5000/search', {
-        method: 'POST',  // Assegure que o método é POST
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -48,13 +48,13 @@ document.getElementById('searchContactButton').addEventListener('click', functio
                 <p><strong>Nome:</strong> <input type="text" id="editNome" value="${data.nome}"></p>
                 <p><strong>Telefone:</strong> <input type="text" id="editTelefone" value="${data.telefone}"></p>
                 <button id="editContactButton">Editar Contato</button>
+                <button id="deleteContactButton" style="background-color: red; color: white;">Apagar Contato</button>
                 <div id="editMessage" style="margin-top: 10px;"></div>
-            `; 
-   
-            // Adiciona o evento de edição
+            `;
+
             document.getElementById('editContactButton').addEventListener('click', function() {
-                let new_name = document.getElementById('editNome').value;
-                let new_phone = document.getElementById('editTelefone').value;
+                let newNome = document.getElementById('editNome').value;
+                let newTelefone = document.getElementById('editTelefone').value;
 
                 fetch('http://127.0.0.1:5000/edit', {
                     method: 'PUT',
@@ -64,14 +64,34 @@ document.getElementById('searchContactButton').addEventListener('click', functio
                     body: JSON.stringify({ 
                         old_name: data.nome, 
                         old_phone: data.telefone, 
-                        new_name: new_name, 
-                        new_phone: new_phone 
+                        new_name: newNome, 
+                        new_phone: newTelefone 
                     })
                 })
                 .then(response => response.json())
                 .then(editData => {
-                    // Exibe a mensagem desejada após a edição.
-                    document.getElementById('editMessage').textContent = "Contato Editado e Salvo com Sucesso!";
+                    document.getElementById('editMessage').textContent = editData.message;
+                })
+                .catch(error => console.error('Erro:', error));
+            });
+
+            document.getElementById('deleteContactButton').addEventListener('click', function() {
+                let contactName = data.nome; // Capture o nome do contato
+
+                fetch('http://127.0.0.1:5000/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        nome: contactName, 
+                        telefone: data.telefone 
+                    })
+                })
+                .then(response => response.json())
+                .then(deleteData => {
+                    document.getElementById('editMessage').textContent = `${contactName} foi excluído com sucesso!`;
+                    searchResultDiv.innerHTML = ''; // Limpa os campos de busca após a exclusão
                 })
                 .catch(error => console.error('Erro:', error));
             });

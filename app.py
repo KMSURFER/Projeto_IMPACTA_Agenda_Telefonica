@@ -38,7 +38,6 @@ def add_contact():
     except Exception as e:
         return jsonify({"message": f"Erro ao salvar contato: {e}"}), 500
 
-
 @app.route('/search', methods=['POST'])
 def search_contact():
     try:
@@ -46,8 +45,8 @@ def search_contact():
         search_value = data['search']
 
         cursor = conn.cursor()
-        # Busca por nome ou telefone com ILIKE para busca insensível a maiúsculas/minúsculas
-        cursor.execute("SELECT nome, telefone FROM contatos WHERE nome ILIKE %s OR telefone ILIKE %s", (f'%{search_value}%', f'%{search_value}%'))
+        cursor.execute("SELECT nome, telefone FROM contatos WHERE nome ILIKE %s OR telefone ILIKE %s", 
+                       (f'%{search_value}%', f'%{search_value}%'))
         contact = cursor.fetchone()
         cursor.close()
 
@@ -58,7 +57,7 @@ def search_contact():
 
     except Exception as e:
         return jsonify({"error": f"Erro ao procurar contato: {e}"}), 500
-    
+
 @app.route('/edit', methods=['PUT'])
 def edit_contact():
     try:
@@ -69,21 +68,31 @@ def edit_contact():
         new_phone = data['new_phone']
 
         cursor = conn.cursor()
-        # Atualiza o contato
-        cursor.execute("""
-            UPDATE contatos 
-            SET nome = %s, telefone = %s 
-            WHERE nome = %s AND telefone = %s
-        """, (new_name, new_phone, old_name, old_phone))
+        cursor.execute("UPDATE contatos SET nome = %s, telefone = %s WHERE nome = %s AND telefone = %s",
+                       (new_name, new_phone, old_name, old_phone))
         conn.commit()
         cursor.close()
 
-        return jsonify({"message": "Contato atualizado com sucesso!"})
+        return jsonify({"message": "Contato editado e salvo com sucesso!"})
 
     except Exception as e:
-        return jsonify({"message": f"Erro ao atualizar contato: {e}"}), 500
+        return jsonify({"error": f"Erro ao editar contato: {e}"}), 500
 
+@app.route('/delete', methods=['DELETE'])
+def delete_contact():
+    try:
+        data = request.get_json()
+        nome = data['nome']
+        telefone = data['telefone']
 
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM contatos WHERE nome = %s AND telefone = %s", (nome, telefone))
+        conn.commit()
+        cursor.close()
+
+        return jsonify({"message": "Contato deletado com sucesso!"})
+    except Exception as e:
+        return jsonify({"error": f"Erro ao deletar contato: {e}"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

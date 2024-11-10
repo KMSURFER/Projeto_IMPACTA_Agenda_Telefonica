@@ -20,4 +20,4 @@ AC2 -> Função "EDITAR" contato. ✔
 
 AC3 -> Função "PROCURAR" contato. ✔
 
-AC4 -> Função "DELETAR" contato.
+AC4 -> Função "DELETAR" contato. ✔
